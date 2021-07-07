@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 import unittest
 
+
 class NewVisitorTest(unittest.TestCase):
 
     def setUp(self) -> None:
@@ -58,7 +59,6 @@ class NewVisitorTest(unittest.TestCase):
 
         self.fail("Finish the test!")
 
-
         # Edith wonders whether the site will remember her list. Then she sees
         # that the site has generated a unique URK for her -- there is some
         # explanatory text to that effect.
@@ -66,6 +66,8 @@ class NewVisitorTest(unittest.TestCase):
         # She visits that URL - her to-do list is still there.
 
         # Satisfied, she goes back to sleep
+
+
 
 
 if __name__ == "__main__":

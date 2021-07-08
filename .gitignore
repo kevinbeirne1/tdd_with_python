@@ -1,6 +1,7 @@
 .idea
 config.jsgit
 bootstrap*.zip
+/static
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

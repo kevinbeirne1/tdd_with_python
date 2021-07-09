@@ -49,5 +49,7 @@ def _update_static_files():
 def _update_database():
     run('.virtualenv/bin/python manage.py migrate --noinput')
 
+
 def hello():
+    # adding change to test git push
     print('hello world!')

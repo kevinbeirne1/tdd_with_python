@@ -1,25 +1,12 @@
 import random
-from patchwork.files import append, exists
-from invoke.context import Context
-from fabric.connection import Connection
-
-# from fabric.contrib.files import append, exists
-# from fabric.api import cd, env, local, run
-cd = Context.cd
-run = Connection.run
-local = Connection.local
-
+from fabric.contrib.files import append, exists
+from fabric.api import cd, env, local, run
 
 REPO_URL = "https://github.com/kevinbeirne1/tdd_with_python.git"
-# env.user = "kbeirne"
 
-USER = 'kbeirne'
-HOST = 'superlists-staging.kbeirne.com'
 
 def deploy():
-    # site_folder = f"/home/{env.user}/sites/{env.host}"
-    site_folder = f"/home/{USER}/sites/{HOST}"
-
+    site_folder = f"/home/{env.user}/sites/{env.host}"
     run(f"mkdir -p {site_folder}")
     with cd(site_folder):
         _get_latest_source()
@@ -46,8 +33,7 @@ def _update_virtualenv():
 
 def _create_or_update_dotenv():
     append('.env', 'DJANGO_DEBUG_FALSE=y')
-    # append('.env', f'SITENAME={env.host}')
-    append('.env', f'SITENAME={HOST}')
+    append('.env', f'SITENAME={env.host}')
     current_contents = run('cat .env')
     if 'DJANGO_SECRET_KEY' not in current_contents:
         new_secret = ''.join(random.SystemRandom().choices(
@@ -62,3 +48,8 @@ def _update_static_files():
 
 def _update_database():
     run('.virtualenv/bin/python manage.py migrate --noinput')
+
+
+def hello():
+    # adding change to test git push
+    print('hello world!')

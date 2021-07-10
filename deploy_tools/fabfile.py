@@ -51,5 +51,4 @@ def _update_database():
 
 
 def hello():
-    # adding change to test git push
     print('hello world!')

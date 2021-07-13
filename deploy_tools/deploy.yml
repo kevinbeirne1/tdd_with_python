@@ -11,21 +11,18 @@
        debug:
          msg: "{{ USER }}@{{ HOST }}.kbeirne.com"
 
-     - name: create file with variable name
-       command: "touch ~/sites/{{ HOST }}.kbeirne.com/{{ USER }}.txt"
-
-     - name: Print user to created file
-       ansible.builtin.shell: echo $USER >> ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt
-
      - name: get latest git commit
-       ansible.builtin.shell: chdir={{ SITE_FOLDER }} git log -n 1 --format=%H
+       shell: chdir={{ SITE_FOLDER }} git log -n 1 --format=%H
        register: latest_commit
 
      - name: log latest commit to file
-       ansible.builtin.shell: echo latest_commit >> {{ SITE_FOLDER }}/ansible_was_here.txt
+       shell: echo {{ latest_commit['stdout'] }}
 
-         # - name: Print hostname
-         #  command: "echo hostname >> ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt"
+     - name: clone latest version from from git
+       ansible.builtin.git:
+         repo: "{{ REPO_URL }}"
+         dest: "{{ SITE_FOLDER }}/test"
+         single_branch: yes
+         version: main
 
-       #"touch ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt"
-
+...

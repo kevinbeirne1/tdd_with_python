@@ -1,0 +1,31 @@
+---
+- name: My task
+  hosts: all
+  vars: 
+    USER: "{{ lookup('env', 'USER') }}"
+    HOST: "superlists-staging"
+    REPO_URL: "https://github.com/kevinbeirne1/tdd_with_python.git"
+    SITE_FOLDER: "~/sites/{{ HOST }}.kbeirne.com"
+  tasks:
+     - name: print variables
+       debug:
+         msg: "{{ USER }}@{{ HOST }}.kbeirne.com"
+
+     - name: create file with variable name
+       command: "touch ~/sites/{{ HOST }}.kbeirne.com/{{ USER }}.txt"
+
+     - name: Print user to created file
+       ansible.builtin.shell: echo $USER >> ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt
+
+     - name: get latest git commit
+       ansible.builtin.shell: chdir={{ SITE_FOLDER }} git log -n 1 --format=%H
+       register: latest_commit
+
+     - name: log latest commit to file
+       ansible.builtin.shell: echo latest_commit >> {{ SITE_FOLDER }}/ansible_was_here.txt
+
+         # - name: Print hostname
+         #  command: "echo hostname >> ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt"
+
+       #"touch ~/sites/superlists-staging.kbeirne.com/ansible_was_here.txt"
+

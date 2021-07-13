@@ -1,0 +1,16 @@
+---
+- name: Create and manage venv
+  hosts: all
+  tasks:
+     - name: create a virtual environment in the superlists site
+       command: python3 -m venv /home/sample_venv
+       become: yes
+       become_method: sudo
+
+     - name: Install the project required python packages
+       pip:
+         executable: "/home/sample_venv/bin/pip"
+         requirements: "/home/requirements.txt"
+       become: yes
+       become_method: sudo
+...

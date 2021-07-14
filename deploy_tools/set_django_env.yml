@@ -1,0 +1,31 @@
+---
+- name: Create .env and set Django security variables
+  hosts: all
+  vars:
+      PATH: "/home/.env"
+      SECRET_KEY: "ct_&ev##lvga&gh7#qr^yd=gr4&^*#mu)$ej_%$=qf7@cr-8zy"
+      HOST: '{{ inventory_hostname }}'
+
+  tasks:
+    - name: run get_secret_key script
+      script: "~/sites/{{ HOST }}/deploy_tools/get_secret_key.py"
+      register: secret_key
+
+    - name: Print result of get_secret_key
+      debug: "{{ secret_key }}"
+
+    - name: Verify DJANGO_DEBUG_FALSE set to y
+      lineinfile:
+          path: '{{ PATH }}'
+          line: 'DJANGO_DEBUG_FALSE=y'
+      become: yes
+      become_method: sudo
+
+    - name: Verify SITENAME is set
+      lineinfile:
+          path: '{{ PATH }}'
+          line: 'SITENAME={{ HOST }}'
+      become: yes
+      become_method: sudo
+
+...

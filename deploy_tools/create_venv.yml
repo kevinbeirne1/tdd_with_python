@@ -10,6 +10,6 @@
 
      - name: Install the project required python packages
        pip:
-         executable: "{{ ROOT_FOLDER }}/sample_venv/bin/pip"
+         executable: "{{ ROOT_FOLDER }}/virtualenv/bin/pip"
          requirements: "{{ ROOT_FOLDER }}/requirements.txt"
 ...

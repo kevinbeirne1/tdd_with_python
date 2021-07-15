@@ -7,22 +7,25 @@
       HOST: '{{ inventory_hostname }}'
       ROOT_FOLDER: '~/sites/{{ HOST }}'
       VIRTUAL_ENV_FOLDER: '{{ ROOT_FOLDER }}/virtualenv'
+      PYTHON_EXECUTABLE: '{{ VIRTUAL_ENV_FOLDER }}/bin/python'
 
   tasks:
+    - name: ensure .env exists
+      command: "touch {{ ROOT_FOLDER }}/.env"
+
     - name: run get_secret_key script
       script: "./get_secret_key.py"
       args:
-        executable: "{{ VIRTUAL_ENV_FOLDER }}/bin/python"
+        executable: "{{ PYTHON_EXECUTABLE }}"
       register: secret_key
 
-    - name: Print result of get_secret_key
+    - name: Verify DJANGO_SECRET_KEY present
       lineinfile:
+          regexp: "^DJANGO_SECRET_KEY="
           path: '{{ PATH }}'
           line: "{{ secret_key['stdout_lines'][0] }}"
       become: yes
       become_method: sudo
-#      debug:
-#        msg: "{{ secret_key }}"
 
     - name: Verify DJANGO_DEBUG_FALSE set to y
       lineinfile:

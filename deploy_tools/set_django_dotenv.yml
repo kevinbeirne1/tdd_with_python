@@ -2,43 +2,37 @@
 - name: Create .env and set Django security variables
   hosts: all
   vars:
-      PATH: "/home/.env"
-      SECRET_KEY: "ct_&ev##lvga&gh7#qr^yd=gr4&^*#mu)$ej_%$=qf7@cr-8zy"
       HOST: '{{ inventory_hostname }}'
       ROOT_FOLDER: '~/sites/{{ HOST }}'
+      DOT_ENV_FILE: "{{ ROOT_FOLDER }}/.env"
       VIRTUAL_ENV_FOLDER: '{{ ROOT_FOLDER }}/virtualenv'
       PYTHON_EXECUTABLE: '{{ VIRTUAL_ENV_FOLDER }}/bin/python'
 
   tasks:
     - name: ensure .env exists
-      command: "touch {{ ROOT_FOLDER }}/.env"
+      command: "touch {{ DOT_ENV_FILE }}"
 
     - name: run get_secret_key script
-      script: "./get_secret_key.py"
-      args:
-        executable: "{{ PYTHON_EXECUTABLE }}"
+      command:
+        argv:
+          - "{{ PYTHON_EXECUTABLE }}"
+          - "{{ ROOT_FOLDER }}/deploy_tools/get_secret_key.py"
       register: secret_key
 
     - name: Verify DJANGO_SECRET_KEY present
       lineinfile:
+          path: '{{ DOT_ENV_FILE }}'
           regexp: "^DJANGO_SECRET_KEY="
-          path: '{{ PATH }}'
           line: "{{ secret_key['stdout_lines'][0] }}"
-      become: yes
-      become_method: sudo
 
     - name: Verify DJANGO_DEBUG_FALSE set to y
       lineinfile:
-          path: '{{ PATH }}'
+          path: '{{ DOT_ENV_FILE }}'
           line: 'DJANGO_DEBUG_FALSE=y'
-      become: yes
-      become_method: sudo
 
     - name: Verify SITENAME is set
       lineinfile:
-          path: '{{ PATH }}'
+          path: '{{ DOT_ENV_FILE }}'
           line: 'SITENAME={{ HOST }}'
-      become: yes
-      become_method: sudo
 
 ...

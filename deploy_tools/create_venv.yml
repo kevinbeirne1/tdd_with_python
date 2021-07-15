@@ -6,7 +6,7 @@
     ROOT_FOLDER: "~/sites/{{ HOST }}"
   tasks:
      - name: create a virtual environment in the superlists site
-       command: python3 -m venv "{{ ROOT_FOLDER }}/sample_venv"
+       command: python3 -m venv "{{ ROOT_FOLDER }}/virtualenv"
 
      - name: Install the project required python packages
        pip:

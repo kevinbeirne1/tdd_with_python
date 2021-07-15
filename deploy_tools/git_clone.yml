@@ -1,24 +1,20 @@
 ---
-- name: My task
+- name: Get latest commit from github
   hosts: all
+
   vars: 
     HOST: "{{ inventory_hostname}}"
     REPO_URL: "https://github.com/kevinbeirne1/tdd_with_python.git"
     ROOT_FOLDER: "~/sites/{{ HOST }}"
+
   tasks:
-
-     - name: get latest git commit
-       shell: chdir={{ SITE_FOLDER }} git log -n 1 --format=%H
-       register: latest_commit
-
-     - name: log latest commit to file
-       shell: echo {{ latest_commit['stdout'] }}
 
      - name: clone latest version from from git
        ansible.builtin.git:
          repo: "{{ REPO_URL }}"
-         dest: "{{ ROOT_FOLDER }}/test"
+         dest: "{{ ROOT_FOLDER }}"
          single_branch: yes
          version: main
+         force: yes
 
 ...

@@ -1,0 +1,21 @@
+---
+- name: Migrate the database
+  hosts: all
+
+  vars:
+      HOST: '{{ inventory_hostname }}'
+      ROOT_FOLDER: '~/sites/{{ HOST }}'
+      DOT_ENV_FILE: "{{ ROOT_FOLDER }}/.env"
+      VIRTUAL_ENV_FOLDER: '{{ ROOT_FOLDER }}/virtualenv'
+      PYTHON_EXECUTABLE: '{{ VIRTUAL_ENV_FOLDER }}/bin/python'
+
+  tasks:
+    - name: Update the database
+      command:
+        argv:
+          - "{{ PYTHON_EXECUTABLE }}"
+          - "{{ ROOT_FOLDER }}/manage.py"
+          - migrate
+          - --noinput
+
+...

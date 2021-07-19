@@ -1,5 +1,5 @@
 ---
-- name: Collect static files & migrate database
+- name: Collect static files
   hosts: all
   vars:
       HOST: '{{ inventory_hostname }}'
@@ -15,14 +15,6 @@
           - "{{ PYTHON_EXECUTABLE }}"
           - "{{ ROOT_FOLDER }}/manage.py"
           - collectstatic
-          - --noinput
-
-    - name: Update the database
-      command:
-        argv:
-          - "{{ PYTHON_EXECUTABLE }}"
-          - "{{ ROOT_FOLDER }}/manage.py"
-          - migrate
           - --noinput
 
 ...

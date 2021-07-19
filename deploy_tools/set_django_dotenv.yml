@@ -9,8 +9,14 @@
       PYTHON_EXECUTABLE: '{{ VIRTUAL_ENV_FOLDER }}/bin/python'
 
   tasks:
-    - name: ensure .env exists
+    - name: Check that .env exists
+      stat:
+        path: "{{ DOT_ENV_FILE }}"
+      register: dotenv_status
+
+    - name: Create .env file
       command: "touch {{ DOT_ENV_FILE }}"
+      when: not dotenv_status.stat.exists
 
     - name: run get_secret_key script
       command:

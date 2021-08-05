@@ -39,7 +39,7 @@ class FunctionalTest(StaticLiveServerTestCase):
 
     @wait
     def wait_for(self, fn):
-        return fn
+        return fn ()
 
     def get_item_input_box(self):
         return self.browser.find_element_by_id('id_text')

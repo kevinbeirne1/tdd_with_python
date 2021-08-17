@@ -1,0 +1,2 @@
+[staging]
+superlists-staging.kbeirne.com ansible_ssh_user=kbeirne ansible_become=yes

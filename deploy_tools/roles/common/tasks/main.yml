@@ -18,6 +18,8 @@
     dest: /etc/nginx/sites-available/{{ HOST }}
   notify:
       - restart nginx
+  tags:
+    - nginx
 
 - name: add symlink in nginx sites-enabled
   file:
@@ -26,6 +28,8 @@
     state: link
   notify:
     - restart nginx
+  tags:
+    - nginx
 
 - name: write gunicorn service script
   template:
@@ -143,4 +147,16 @@
   tags:
     - 'migrate'
 
+- name: print name
+  debug:
+    msg:
+    - "{{ ansible_ssh_user }}"
+    - "{{ HOST }}"
+    - "{{ REPO_URL }}"
+    - "{{ ROOT_FOLDER }}"
+    - "{{ DOT_ENV_FILE }}"
+    - "{{ VIRTUAL_ENV_FOLDER }}"
+    - "{{ PYTHON_EXECUTABLE }}"
 
+  tags:
+    - "test"

@@ -16,6 +16,11 @@ def _get_server_env_vars(host):
 def create_session_on_server(host, email):
     manage_dot_py = _get_manage_dot_py(host)
     with settings(host_string=f'kbeirne@{host}'):
+        session_key = run(f'{manage_dot_py} create_session {email}')
+        return session_key.strip()
+
+        # Leaving the following code for record keeping. For some reason
+        # couldn't create a pre-authenticated session when shell_env used
         env_vars = _get_server_env_vars(host)
         with shell_env(**env_vars):
             session_key = run(f'{manage_dot_py} create_session {email}')

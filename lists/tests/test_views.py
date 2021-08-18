@@ -151,3 +151,10 @@ class ListViewTest(TestCase):
         form = ExistingListItemForm(for_list=list_, data={'text': 'hi'})
         new_item = form.save()
         self.assertEqual(new_item, Item.objects.all()[0])
+
+
+class MyListsTest(TestCase):
+
+    def test_my_lists_url_render_my_lists_template(self):
+        response = self.client.get('/lists/users/a@b.com/')
+        self.assertTemplateUsed(response, 'lists/my_lists.html')

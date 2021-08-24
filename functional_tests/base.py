@@ -7,6 +7,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from .management.commands.create_session import \
     create_pre_authenticated_session
@@ -35,7 +36,10 @@ def wait(fn):
 class FunctionalTest(StaticLiveServerTestCase):
 
     def setUp(self) -> None:
-        self.browser = webdriver.Firefox()
+        options = FirefoxOptions()
+        options.add_argument("--headless")
+        self.browser = webdriver.Firefox(firefox_options=options)
+        # self.browser = webdriver.Firefox()
         self.staging_server = os.environ.get("STAGING_SERVER")
         if self.staging_server:
             self.live_server_url = "http://" + self.staging_server
@@ -108,7 +112,6 @@ class FunctionalTest(StaticLiveServerTestCase):
         self.get_item_input_box().send_keys(Keys.ENTER)
         item_number = num_rows + 1
         self.wait_for_row_in_list_table(f'{item_number}: {item_text}')
-
 
     def create_pre_authenticated_session(self, email):
         if self.staging_server:

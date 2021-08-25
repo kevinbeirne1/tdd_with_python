@@ -5,6 +5,7 @@ from django.db import models
 
 class List(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    shared_with = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='shared_lists')
 
     def get_absolute_url(self):
         return reverse('lists:view_list', args=[self.id])
@@ -18,6 +19,10 @@ class List(models.Model):
     @property
     def name(self):
         return self.item_set.first().text
+
+    # @property
+    # def shared_with_all(self):
+    #     return self.shared_with.all()
 
 
 class Item(models.Model):

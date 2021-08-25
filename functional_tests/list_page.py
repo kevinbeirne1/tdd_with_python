@@ -24,19 +24,20 @@ class ListPage(object):
 
     def add_list_item(self, item_text):
         new_item_no = len(self.get_table_rows()) + 1
+
         self.get_item_input_box().send_keys(item_text)
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table(item_text, new_item_no)
         return self
 
     def get_share_box(self):
-        return self.test.browser.find_element_by_css_selector(
-            'input[name="sharee"]'
+        return self.test.browser.find_element_by_xpath(
+            '//input[@name="sharee"]'
         )
 
     def get_shared_with_list(self):
-        return self.test.browser.find_elements_by_css_selector(
-            '.list-sharee'
+        return self.test.browser.find_elements_by_xpath(
+            '//li[@id="sharee"]'
         )
 
     def share_list_with(self, email):

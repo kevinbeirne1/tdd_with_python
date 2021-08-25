@@ -27,7 +27,6 @@ class SharingTest(FunctionalTest):
         oni_browser = webdriver.Firefox()
         self.addCleanup(lambda: quit_if_possible(oni_browser))
         self.browser = oni_browser
-
         self.create_pre_authenticated_session('oniciferous@example.com')
 
         # Edith goes to the home page and starts a list
@@ -65,4 +64,4 @@ class SharingTest(FunctionalTest):
         # When Edith refreshes the page, she sees Oniciferous's addition
         self.browser = edith_browser
         self.browser.refresh()
-        list_page.wait_for_row_in_list_table('Hi Edith', 2)
+        list_page.wait_for_row_in_list_table('Hi Edith!', 2)
